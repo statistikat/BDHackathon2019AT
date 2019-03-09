@@ -29,6 +29,13 @@ tables_a[ ,pid:=as.numeric(substr(file,start=30, stop=32))]
 tables_b[ ,pid:=as.numeric(substr(file,start=30, stop=32))]
 tables_c[ ,pid:=as.numeric(substr(file,start=30, stop=32))]
 
+# parse time correctly
+tables_a[, utc_timestamp := lubridate::dmy_hms(utc_timestamp)]
+tables_b[, start_local := lubridate::dmy_hms(start_local)]
+tables_b[, stop_local := lubridate::dmy_hms(stop_local)]
+tables_c[, start_utc_timestamp := lubridate::dmy_hms(start_utc_timestamp)]
+tables_c[, stop_utc_timestamp := lubridate::dmy_hms(stop_utc_timestamp)]
+
 meals <- lapply(
   list.files("/mnt/s3/bigO/self_reports"),
   
