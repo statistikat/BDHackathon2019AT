@@ -36,16 +36,36 @@ meals <- lapply(
     if(length(meal)>0){
     meal <- unlist(sapply(meal,function(x)x[[1]]))
     meal_paths <- paste0(paste0("/mnt/s3/bigO/self_reports/",x,"/meals/",meal,".jpg"))
-    meals <- data.frame(meal,meal_paths,pid=x)
+    meals <- data.frame(meal,meal_paths,pid=x,stringsAsFactors = FALSE)
     }else{
       meals <- NULL
   }
 }
 )
 meals <- data.table::rbindlist(meals)
+meals[ ,pid:=as.numeric(pid)]
+meals[ ,meal:=as.numeric(meal)]
 
-data.table::setDT(meals)
+meals_json_files <- lapply(
+  list.files("/mnt/s3/bigO/self_reports"),
+  function(x) {
+    json_files <- grep("json",list.files(paste0("/mnt/s3/bigO/self_reports/",x,"/meals"),full.names = TRUE),value=TRUE)
+    json_in <- lapply(json_files,
+           function(y){
+           read_json(y, simplifyVector = FALSE)
+           }
+    )
+    
+    json_in <- do.call(rbind,json_in)
+    
+    }
+  
+)
+meals_json_files <- unlist(meals_json_files)
+
+json_file <- meals_json_files[1]
+json <- read_json(json_file, simplifyVector = FALSE)
 
 
-list.files("/mnt/s3/bigO/self_reports/819/meals")
+library("jsonlite")
 help(package="jsonlite")
