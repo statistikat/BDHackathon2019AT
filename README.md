@@ -23,7 +23,7 @@ The challenge is not only limited to currently collected information but could a
 
 ## Links
 
-Web applications:
+### Web applications:
 
 Hue: http://ip-10-0-1-192.eu-west-1.compute.internal:8888
 
@@ -35,7 +35,7 @@ RStudio: http://ip-10-0-1-192.eu-west-1.compute.internal:8787 (username: rstudio
 
  
 
-Monitoring applications:
+### Monitoring applications:
 
 Ganglia: http://ip-10-0-1-192.eu-west-1.compute.internal/ganglia/
 
