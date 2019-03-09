@@ -1,3 +1,5 @@
+library(dplyr)
+
 tables_a <- lapply(
   list.files("/dataset/bigo/tables/table_a/", full.names = TRUE), 
   function(x) {
