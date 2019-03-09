@@ -22,8 +22,8 @@ tables_c <- lapply(
 ) %>% data.table::rbindlist()
 
 
-# character id
-#tables_a[ ,id:=paste0("pid",substr(file,start=31, stop=33))]
+
 # numeric id
 tables_a[ ,id:=as.numeric(substr(file,start=31, stop=33))]
-tables_a[,time_]
+tables_b[ ,id:=as.numeric(substr(file,start=31, stop=33))]
+tables_c[ ,id:=as.numeric(substr(file,start=31, stop=33))]
