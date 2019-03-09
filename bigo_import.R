@@ -36,13 +36,13 @@ meals <- lapply(
     if(length(meal)>0){
     meal <- unlist(sapply(meal,function(x)x[[1]]))
     meal_paths <- paste0(paste0("/mnt/s3/bigO/self_reports/",x,"/meals/",meal,".jpg"))
-    meals <- cbind(meal,meal_paths,pid=x)
+    meals <- data.frame(meal,meal_paths,pid=x)
     }else{
       meals <- NULL
   }
 }
 )
-meals <- do.call(rbind, meals)
+meals <- data.table::rbindlist(meals)
 
 data.table::setDT(meals)
 
