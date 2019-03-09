@@ -48,6 +48,3 @@ Hadoop NN: http://ip-10-0-1-192.eu-west-1.compute.internal:50070
 ### Dataset Infos
 
 https://ec.europa.eu/eurostat/cros/EU-BD-Hackathon_en
-
-
-https://webgate.ec.europa.eu/fpfis/wikis/display/EstatBigData/European+Big+Data+Hackathon+Data+Sources
