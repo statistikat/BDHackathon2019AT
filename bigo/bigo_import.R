@@ -25,9 +25,9 @@ tables_c <- lapply(
 
 
 # numeric id
-tables_a[ ,id:=as.numeric(substr(file,start=31, stop=33))]
-tables_b[ ,id:=as.numeric(substr(file,start=31, stop=33))]
-tables_c[ ,id:=as.numeric(substr(file,start=31, stop=33))]
+tables_a[ ,pid:=as.numeric(substr(file,start=30, stop=32))]
+tables_b[ ,pid:=as.numeric(substr(file,start=30, stop=32))]
+tables_c[ ,pid:=as.numeric(substr(file,start=30, stop=32))]
 
 meals <- lapply(
   list.files("/mnt/s3/bigO/self_reports"),
