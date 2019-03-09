@@ -1,4 +1,5 @@
 library(dplyr)
+library(jsonlite)
 
 tables_a <- lapply(
   list.files("/mnt/s3/bigO/tables/table_a/", full.names = TRUE), 
@@ -63,8 +64,8 @@ meals_json_files <- lapply(
 )
 meals_json_files <- unlist(meals_json_files)
 
-json_file <- meals_json_files[1]
-json <- read_json(json_file, simplifyVector = FALSE)
+#json_file <- meals_json_files[1]
+#json <- read_json(json_file, simplifyVector = FALSE)
 
 
 library("jsonlite")
