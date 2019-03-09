@@ -21,5 +21,30 @@ The challenge is not only limited to currently collected information but could a
 * ...
 
 
+## Links
+
+Web applications:
+
+Hue: http://ip-10-0-1-192.eu-west-1.compute.internal:8888
+
+Zeppelin: http://ip-10-0-1-192.eu-west-1.compute.internal:8890/
+
+Jupyter: https://ip-10-0-1-192.eu-west-1.compute.internal:9443/ (username: jovyan password: jupyter)
+
+RStudio: http://ip-10-0-1-192.eu-west-1.compute.internal:8787 (username: rstudio password: admin)
+
+ 
+
+Monitoring applications:
+
+Ganglia: http://ip-10-0-1-192.eu-west-1.compute.internal/ganglia/
+
+Spark History: http://ip-10-0-1-192.eu-west-1.compute.internal:18080/
+
+Hadoop RM: http://ip-10-0-1-192.eu-west-1.compute.internal:8088/cluster
+
+Hadoop NN: http://ip-10-0-1-192.eu-west-1.compute.internal:50070
+
+
 
 https://webgate.ec.europa.eu/fpfis/wikis/display/EstatBigData/European+Big+Data+Hackathon+Data+Sources
