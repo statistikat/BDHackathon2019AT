@@ -47,26 +47,19 @@ meals <- data.table::rbindlist(meals)
 meals[ ,pid:=as.numeric(pid)]
 meals[ ,meal:=as.numeric(meal)]
 
-meals_json_files <- lapply(
+meals_json <- lapply(
   list.files("/mnt/s3/bigO/self_reports"),
   function(x) {
     json_files <- grep("json",list.files(paste0("/mnt/s3/bigO/self_reports/",x,"/meals"),full.names = TRUE),value=TRUE)
     json_in <- lapply(json_files,
-           function(y){
-           read_json(y, simplifyVector = FALSE)
-           }
+                      function(y){
+                        iny <- as.list(c(pid=x,unlist(read_json(y))))
+                      }
     )
-    
-    json_in <- do.call(rbind,json_in)
-    
-    }
+    json_in <- lapply(json_in, function(z) data.table::as.data.table(z))
+    json_in <- data.table::rbindlist(json_in,fill = TRUE,use.names = TRUE)
+  }
   
 )
-meals_json_files <- unlist(meals_json_files)
+meals_json <- data.table::rbindlist(meals_json,fill = TRUE,use.names = TRUE)
 
-#json_file <- meals_json_files[1]
-#json <- read_json(json_file, simplifyVector = FALSE)
-
-
-library("jsonlite")
-help(package="jsonlite")
