@@ -27,13 +27,13 @@ fitness[ ,table(median_fitness)]
 fitness[ ,table(median_steps)]
 
 # median fitness per pid over all days with ntimestamp_byDay>=40 
-fitness[median_fitness<30 ,fitness_cat:=0]
-fitness[median_fitness>=30 & median_fitness<60 ,fitness_cat:=1]
-fitness[median_fitness>=60 ,fitness_cat:=2]
+fitness[median_fitness<30 ,fitness_cat:="0"]
+fitness[median_fitness>=30 & median_fitness<60 ,fitness_cat:="1"]
+fitness[median_fitness>=60 ,fitness_cat:="2"]
 # median nr of steps per pid over all days with ntimestamp_byDay>=40 
-fitness[median_steps<2000,steps_cat:=0]
-fitness[median_steps>=2000 & median_steps<5000 ,steps_cat:=1]
-fitness[median_steps>=5000,steps_cat:=2]
+fitness[median_steps<2000,steps_cat:="0"]
+fitness[median_steps>=2000 & median_steps<5000 ,steps_cat:="1"]
+fitness[median_steps>=5000,steps_cat:="2"]
 
 # Eigentlich: Active: 10,000 steps per day indicates the point that should be used to classify individuals as active. 
 # Aber in den Daten sind nur faule Saecke:
