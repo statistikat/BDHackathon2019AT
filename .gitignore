@@ -27,3 +27,5 @@ rsconnect/
 .Rproj.user
 README.html
 BDHackathon2019AT.Rproj
+out.csv
+access_aws.R

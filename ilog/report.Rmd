@@ -1,0 +1,70 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r}
+library(jsonlite)
+library(data.table)
+library(hms)
+
+```
+
+
+```{r}
+act <- readRDS("/mnt/s3/ilog/activities.rds")
+```
+
+```{r prep}
+
+act[, sporty_type := grepl("sport", type, ignore.case = TRUE)]
+act[, sporty_mot  := grepl("(foot)|(bicycle)", type, ignore.case = TRUE)]
+
+act[, time := as.hms(ts_notif)]
+act
+
+ppl <- act[, .(
+  sports = sum(sporty_type | sporty_mot), 
+  answers = sum(type != "Expired"),
+  sleep   = sum(type == "Sleeping"),
+  days = difftime(max(ts_answer), min(ts_notif), unit = "days")
+), 
+  by = "respondent"
+]
+
+ppl[, fitness := sports/as.numeric(days)]
+ppl[, sleepy  := sleep/as.numeric(days)]
+ppl[, rigor   := answers/as.numeric(days)]
+
+ppl[, fitlvl := dplyr::case_when(
+  fitness == 0 ~ 0,
+  fitness <  0.5 ~ 1,
+  TRUE ~ 2
+)]
+
+
+ppl <- ppl[rigor > 12 & days >= 1]
+act <- act[respondent %in% ppl$respondent]
+
+
+```
+
+
+
+```{r}
+table(act[ time <= hms(0, 0, 6) | time >= hms(0, 0, 22)]$type)
+```
+
+
+```{r}
+act[respondent %in% ppl[fitlvl == 2]$respondent, ]
+
+ppl[fitlvl == 2, mean(sleepy)]
+ppl[fitlvl == 1, mean(sleepy)]
+ppl[fitlvl == 0, mean(sleepy)]
+
+```
+
+
