@@ -111,7 +111,7 @@ plot_ly(
 The average sleeping time of iLog users was 5 hours. 
 
 
-### iLog is an interactive time-diary
+### iLog is an interactive time-diary that asks hourly questions
 
 ```{r include = TRUE}
 knitr::include_graphics("http://52.214.106.253/img/bad_sleep.jpeg")
