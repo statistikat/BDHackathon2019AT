@@ -89,7 +89,7 @@ order <- list(
 
 
 ppl[, fitfct := as.factor(fitlvl)]
-levels(ppl$fitfct) <- c("leisurely", "average", "sporty")
+levels(ppl$fitfct) <- c("easy-going", "average", "fit")
 
 plot_ly(
   data = ppl,
@@ -219,3 +219,24 @@ knitr::include_graphics("http://52.214.106.253/img/sleep.svg")
 
 <iframe src="http://52.214.106.253/img/trelliscope/" width="100%", height="100%"></iframe>
 
+***
+
+Different eating patterns can be explored via a trelloscope widget. The
+filtering can be used to limit the pictures according to several characteristics
+
+#### fitness
+
+* **fitness** of the responent modeled with the number of
+  biking, walking and jogging minutes
+* median number of **steps** per day
+
+#### properties of the meal
+
+- does the meal/drink/snack contain **sugar**?
+- Is it **home prepared**?
+- What **temperature** is it?
+- **meal type** (breakfast, lunch, dinner, drink)
+
+#### other
+
+- When (**hour**, **day**) and where (**country**) was the meal consumed?
