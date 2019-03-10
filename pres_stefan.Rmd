@@ -165,7 +165,7 @@ plot_ly(x=seq_along(colnames(d)), y=rownames(d), z = d, type = "heatmap", showsc
 
 ***
 
-Not all sensors available on all phones, and not all of them
+Not all sensors are available on all phones, and not all of them
 are useful for evaluation sleeping patterns. The following
 sensors could be especially useful to identify sleep periods 
 and wake-up events:
@@ -218,15 +218,25 @@ Long periods of inactivy at night indicate sleep
 knitr::include_graphics("http://52.214.106.253/img/sleep.svg")
 ```
 
-### The bigO data set provides self reports but also sensor data from phones. 
+### The bigO data set provides self reports and sensor data from phones. 
 
-Main information used for the analysis
+<div style = "font-size: 20px">
 
-* Geographical <- cell phone
-* Physical activity level <- cell phone
-* Eating habits <- self reports
+```{r, include = TRUE,ou}
+knitr::kable(
+  caption = "Main information used for the analysis", 
+  data.frame(
+    #rmarkdown::paged_table(data.frame(
+    information = c("Geographical", "Physical activity", "Eating habits"),
+    source = c("cell phone", "cell phone", "self reports"),
+    example = c("GPS coordinates", "Number of minutes walked",
+                "Warm/cold food")
+  ))
+```
 
-### Geographical aspect
+</div>
+
+### GPS coordinates allow to link activities to countries
 
 ```{r include = TRUE, fig.width = 1}
 knitr::include_graphics("http://52.214.106.253/img/fitness_cat_country_2.jpg")
@@ -275,24 +285,6 @@ filtering can be used to limit the pictures according to several characteristics
 - When (**hour**, **day**) and where (**country**) was the meal consumed?
 
 ### Summary
-
-```{css}
-<style>
-.container { 
-  height: 200px;
-  position: relative;
-  border: 3px solid green; 
-}
-
-.vertical-center {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-</style>
-```
 
 </br></br></br></br>
 <div style="font-size: 25px;  top: 50%;">
