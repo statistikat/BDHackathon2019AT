@@ -218,6 +218,14 @@ Long periods of inactivy at night indicate sleep
 knitr::include_graphics("http://52.214.106.253/img/sleep.svg")
 ```
 
+### The bigO data set provides self reports but also sensor data from phones. 
+
+Main information used for the analysis
+
+* Geographical <- cell phone
+* Physical activity level <- cell phone
+* Eating habits <- self reports
+
 ### Geographical aspect
 
 ```{r include = TRUE, fig.width = 1}
