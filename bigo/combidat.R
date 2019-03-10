@@ -12,4 +12,5 @@ combidat <- merge(meals_coords_countries[,list(iso2, X, Y)], meals_json,
                   by.y = c("location.coordinates1","location.coordinates2"),all.y=TRUE, all.x=FALSE)
 combidat <- combidat[order(pid,meal,iso2),]
 #combidat[,list(pid,X,Y,meal, iso2)]
-combidat <- merge(fitness, combidat, by="pid")
+combidat <- merge(fitness, combidat, by="pid", all.y=TRUE, all.x=TRUE)
+
