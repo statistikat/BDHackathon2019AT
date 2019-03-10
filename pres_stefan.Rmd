@@ -130,3 +130,8 @@ d[rownames(d) %in% sleep_events] <- d[rownames(d) %in% sleep_events] + 2
 ```{r heatmap sensible sensors, include=TRUE, echo=FALSE}
 plot_ly(x=colnames(d), y=rownames(d), z = d, type = "heatmap", showscale = FALSE, colors = c("#edf8fb", "#b2e2e2", "#66c2a4", "#238b45")) 
 ```
+
+### Meals
+
+<iframe src="http://52.214.106.253/img/trelliscope/" width="100%", height="100%"></iframe>
+
