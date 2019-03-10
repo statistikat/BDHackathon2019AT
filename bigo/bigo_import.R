@@ -72,3 +72,9 @@ meals_json <- data.table::rbindlist(meals_json,fill = TRUE,use.names = TRUE)
 meals_json[, start_datetime := lubridate::ymd_hms(start_datetime)]
 meals_json[, pid := as.numeric(pid)]
 meals_json[, meal := meals$meal]
+
+meals_json[!is.na(meal_attributes.sugar), sugar := meal_attributes.sugar]
+meals_json[!is.na(snack_attributes.sugar), sugar := snack_attributes.sugar]
+meals_json[!is.na(drink_attributes.sugar), sugar := drink_attributes.sugar]
+meals_json[!is.na(snack_attributes.food_temperature), temperature := snack_attributes.food_temperature]
+meals_json[!is.na(meal_attributes.food_temperature), temperature := meal_attributes.food_temperature]
