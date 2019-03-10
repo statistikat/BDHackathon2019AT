@@ -44,6 +44,7 @@ aws.s3::get_bucket("s3://eu-west-1-hackathon-data/iLog2")
 
 # main activity
   act[where == 1, sum(duration), by = "mainact"]  # at school
+  act[where == 1, sum(duration), by = "mainact"]  # at school
   act[where == 2, sum(duration), by = "mainact"]  # at home
   act[where == 3, sum(duration), by = "mainact"]  # other location
   act[where == 4, sum(duration), by = "mainact"]  # transport
