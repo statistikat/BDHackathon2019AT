@@ -214,3 +214,8 @@ Long periods of inactivy at night indicate sleep
 ```{r include = TRUE, fig.width = 1}
 knitr::include_graphics("http://52.214.106.253/img/sleep.svg")
 ```
+
+### Meals
+
+<iframe src="http://52.214.106.253/img/trelliscope/" width="100%", height="100%"></iframe>
+
