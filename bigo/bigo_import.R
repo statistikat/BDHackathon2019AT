@@ -69,4 +69,6 @@ meals_json <- lapply(
   
 )
 meals_json <- data.table::rbindlist(meals_json,fill = TRUE,use.names = TRUE)
-
+meals_json[, start_datetime := lubridate::ymd_hms(start_datetime)]
+meals_json[, pid := as.numeric(pid)]
+meals_json[, meal := meals$meal]
