@@ -12,6 +12,12 @@ combidat[is.na(home_prepared), home_prepared := "unknown"]
 combidat[home_prepared == "TRUE", home_prepared := "yes"]
 combidat[home_prepared == "FALSE", home_prepared := "no"]
 
+combidat[!is.na(meal_attributes.fruit), fruit := meal_attributes.fruit]
+combidat[!is.na(snack_attributes.fruit), fruit := snack_attributes.fruit]
+combidat[is.na(fruit), fruit := "unknown"]
+combidat[fruit == "TRUE", fruit := "yes"]
+combidat[fruit == "FALSE", fruit := "no"]
+
 combidat[iso2 == "GB", iso2 := "UK"]
 combidat[iso2 == "GR", iso2 := "EL"]
 combidat[iso2 == "-99", iso2 := NA]
@@ -37,7 +43,7 @@ meals2 <- combidat %>%
   select(
     `meal type` = meal_type, day, img, hour, temperature,
     `home prepared` = home_prepared, sugar = sugar2,
-    steps = median_steps, fitness, country
+    steps = median_steps, fitness, country, fruit
   )
 
 ts <- meals2 %>% mutate(img = img_panel(img)) %>%
