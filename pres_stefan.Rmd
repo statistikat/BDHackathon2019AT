@@ -1,0 +1,132 @@
+---
+title: "HTML Widgets Showcase"
+output: 
+  flexdashboard::flex_dashboard:
+    storyboard: true
+    social: menu
+    source: embed
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r include=FALSE}
+library(jsonlite)
+library(data.table)
+library(hms)
+library(data.table)
+library(plotly)
+library(knitr)
+
+
+knitr::opts_chunk$set(include = FALSE)
+
+
+```
+```{r prep ilog}
+act <- readRDS("/mnt/s3/ilog/activities.rds")
+
+act[, sporty_type := grepl("sport", type, ignore.case = TRUE)]
+act[, sporty_mot  := grepl("(foot)|(bicycle)", type, ignore.case = TRUE)]
+
+act[, time := as.hms(ts_notif)]
+act
+
+ppl <- act[, .(
+  sports = sum(sporty_type | sporty_mot), 
+  answers = sum(type != "Expired"),
+  sleep   = sum(type == "Sleeping"),
+  days = difftime(max(ts_answer), min(ts_notif), unit = "days")
+), 
+  by = "respondent"
+]
+
+ppl[, fitness := sports/as.numeric(days)]
+ppl[, sleepy  := sleep/as.numeric(days)]
+ppl[, rigor   := answers/as.numeric(days)]
+
+ppl[, fitlvl := dplyr::case_when(
+  fitness == 0 ~ 0,
+  fitness <  0.5 ~ 1,
+  TRUE ~ 2
+)]
+
+
+ppl <- ppl[rigor > 12 & days >= 1]
+act <- act[respondent %in% ppl$respondent]
+
+```
+
+
+
+
+
+### intro
+
+* Sleep
+* Food
+* Ftiness Level
+
+### iLog - Sleep
+
+### How iLog asks
+
+```{r include = TRUE}
+knitr::include_graphics("http://52.214.106.253/img/bad_sleep.jpeg")
+# /usr/share/nginx/html
+
+```
+
+
+### How iLog should ask
+
+```{r include = TRUE}
+knitr::include_graphics("http://52.214.106.253/img/good_sleep.jpeg")
+```
+
+### iLog Sensors
+
+```{r sensor meta}
+
+x <- fread("/mnt/s3/ilog/meta.csv")
+data.table::setnames(x, names(x), gsub(".parquet", "", names(x)))
+m <- as.matrix(x[, !"respondent"], rownames = x$respondent)
+d <- as.integer(m > 0)
+dim(d) <- dim(m)
+colnames(d) <- colnames(m)
+rownames(d) <- rownames(m)
+d <- t(d)
+d <- d[order(rowSums(d)), ]
+d <- d[, rev(order(colSums(d)))]
+colnames(d) <- strtrim(colnames(d), 6)
+```
+```{r heatmap sensor meta, include=TRUE, echo=FALSE}
+plot_ly(x=colnames(d), y=rownames(d), z = d, type = "heatmap", showscale = FALSE, colors = c("#66c2a4", "#238b45"))
+```
+
+
+
+### iLog sensible sensors
+
+```{r}
+sleep_events <-
+  c(
+    "accelerometerevent",
+    "screenevent",
+    "orientationevent",
+    "rotationvectorevent",
+    "linearaccelerationevent",
+    "gravityevent",
+    "touchevent",
+    "gyroscopeevent",
+    "headsetplugevent",
+    "airplanemodeevent"
+  )
+
+
+d[rownames(d) %in% sleep_events] <- d[rownames(d) %in% sleep_events] + 2
+```
+
+```{r heatmap sensible sensors, include=TRUE, echo=FALSE}
+plot_ly(x=colnames(d), y=rownames(d), z = d, type = "heatmap", showscale = FALSE, colors = c("#edf8fb", "#b2e2e2", "#66c2a4", "#238b45")) 
+```
