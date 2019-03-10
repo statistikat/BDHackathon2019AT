@@ -1,10 +1,11 @@
 ---
-title: "HTML Widgets Showcase"
+title: "Fit or Frite?"
 output: 
   flexdashboard::flex_dashboard:
     storyboard: true
     social: menu
     source: embed
+    logo: http://52.214.106.253/img/fit36.png
 editor_options: 
   chunk_output_type: console
 ---
@@ -18,13 +19,21 @@ library(data.table)
 library(plotly)
 library(knitr)
 
+knitr::opts_chunk$set(include = FALSE, echo = FALSE)
 
-knitr::opts_chunk$set(include = FALSE)
+randomize_name <- function(x){
+  n <- length(unique(x))
+  r <- randomNames::randomNames(n, which.names = "first", sample.with.replacement = FALSE)
+  r[as.integer(as.factor(x))]
+}
 
 
 ```
 ```{r prep ilog}
 act <- readRDS("/mnt/s3/ilog/activities.rds")
+act[, respondent_id := respondent]
+act[, respondent := randomize_name(respondent)]
+
 
 act[, sporty_type := grepl("sport", type, ignore.case = TRUE)]
 act[, sporty_mot  := grepl("(foot)|(bicycle)", type, ignore.case = TRUE)]
@@ -69,13 +78,48 @@ act <- act[respondent %in% ppl$respondent]
 
 ### iLog - Sleep
 
-### How iLog asks
+```{r include=TRUE}
+
+data.table::setorderv(ppl, "sleepy")
+
+order <- list(
+  categoryorder = "array",
+  categoryarray = ppl$respondent[order(ppl$sleepy)]
+)
+
+
+ppl[, fitfct := as.factor(fitlvl)]
+levels(ppl$fitfct) <- c("leisurely", "average", "sporty")
+
+plot_ly(
+  data = ppl,
+  legendgroup = ~fitfct
+) %>% 
+  plotly::add_markers(x = ~respondent,
+  y = ~sleepy,
+  type = "scatter",
+  color = ~fitfct) %>% 
+  layout(xaxis = order, yaxis = list(title = "hours of sleep", range = c(0, 10))) %>% 
+  add_segments(x = ~respondent, xend =  max(ppl$respondent), y = 5, yend = 5, showlegend = FALSE)
+
+```
+
+***
+
+The average sleeping time of iLog users was 5 hours. 
+
+
+### Logging activities with iLog
 
 ```{r include = TRUE}
 knitr::include_graphics("http://52.214.106.253/img/bad_sleep.jpeg")
 # /usr/share/nginx/html
-
 ```
+
+***
+The user has to fill out data every hour. 
+For long monotonous activities like sleeping,
+this can become very tedious.
 
 
 ### How iLog should ask
@@ -84,13 +128,26 @@ knitr::include_graphics("http://52.214.106.253/img/bad_sleep.jpeg")
 knitr::include_graphics("http://52.214.106.253/img/good_sleep.jpeg")
 ```
 
+***
+Long periods of no activities can easily be identified with sensor
+data.  No complicated calculations are necessary to identified
+periods of no activity inside the phone, just monitoring of
+the sensors
+
+
 ### iLog Sensors
 
 ```{r sensor meta}
 
 x <- fread("/mnt/s3/ilog/meta.csv")
+
+x[, respondent_id := strtrim(respondent, 4)]
+x[, respondent := respondent_id]
+x[, respondent := act$respondent[match(x$respondent, act$respondent_id)]]
+x[is.na(respondent), respondent := randomize_name(respondent_id)]
+
 data.table::setnames(x, names(x), gsub(".parquet", "", names(x)))
-m <- as.matrix(x[, !"respondent"], rownames = x$respondent)
+m <- as.matrix(x[, !c("respondent", "respondent_id", "sensors")], rownames = x$respondent)
 d <- as.integer(m > 0)
 dim(d) <- dim(m)
 colnames(d) <- colnames(m)
@@ -101,10 +158,27 @@ d <- d[, rev(order(colSums(d)))]
 colnames(d) <- strtrim(colnames(d), 6)
 ```
 ```{r heatmap sensor meta, include=TRUE, echo=FALSE}
-plot_ly(x=colnames(d), y=rownames(d), z = d, type = "heatmap", showscale = FALSE, colors = c("#66c2a4", "#238b45"))
+plot_ly(x=seq_along(colnames(d)), y=rownames(d), z = d, type = "heatmap", showscale = FALSE, colors = c("#66c2a4", "#238b45"))
 ```
 
+***
 
+Not all sensors available on all phones, and not all of them
+are useful for evaluation sleeping patterns. The following
+sensors could be especially useful to identify sleep periods 
+and wake-up events:
+
+* accelerometerevent
+* screenevent
+* orientationevent
+* rotationvectorevent
+* linearaccelerationevent
+* gravityevent
+* touchevent
+* gyroscopeevent
+* headsetplugevent
+* airplanemodeevent
+* (time)
 
 ### iLog sensible sensors
 
@@ -128,5 +202,15 @@ d[rownames(d) %in% sleep_events] <- d[rownames(d) %in% sleep_events] + 2
 ```
 
 ```{r heatmap sensible sensors, include=TRUE, echo=FALSE}
-plot_ly(x=colnames(d), y=rownames(d), z = d, type = "heatmap", showscale = FALSE, colors = c("#edf8fb", "#b2e2e2", "#66c2a4", "#238b45")) 
+plot_ly(x=seq_along(colnames(d)), y=rownames(d), z = d, type = "heatmap", showscale = FALSE, colors = c("#edf8fb", "#b2e2e2", "#66c2a4", "#238b45")) 
+```
+
+***
+
+Long periods of inactivy at night indicate sleep
+
+***
+
+```{r include = TRUE, fig.width = 1}
+knitr::include_graphics("http://52.214.106.253/img/sleep.svg")
 ```
