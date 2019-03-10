@@ -20,7 +20,8 @@ For example, the number of respondents per country can be obtained as follows
 ``` r
 library(dplyr)
 hetus <- readRDS("/mnt/s3/hetus.rds")
-hetus %>% filter(!duplicated(COUNTRY, HID, PID)) %>% table()
+hetus %>% filter(!duplicated(paste(COUNTRY, HID, PID, DIARY))) %$% 
+  COUNTRY %>% table()
 ```
 
 Activities
@@ -37,3 +38,10 @@ second_activities
 ```
 
 A Codebook for the activities can be found here: ??
+
+Similarly, the following Variables are mesaured in a 10 minutes interval.
+
+-   Location/Transport mode (Wherep)
+-   Alone?
+-   With Partner?
+-   Computer used in the main activity?
