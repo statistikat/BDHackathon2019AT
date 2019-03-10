@@ -22,13 +22,17 @@ fit[fitness_cat=="1", fitness:="average"]
 fit[fitness_cat=="2", fitness:="fit"]
 fit[,fitness:=ordered(fitness, levels= c("easygoing","average","fit"))]
 
-pdf("~/BDHackathon2019AT/bigo/geofacetplots/fitness_cat_country.pdf")
-ggplot(fit, aes(x=fitness, fill=fitness)) +
+#pdf("~/BDHackathon2019AT/bigo/geofacetplots/fitness_cat_country.pdf")
+fitness_cat_country_plot <- ggplot(fit, aes(x=fitness, fill=fitness)) +
   geom_bar() +
   #coord_flip() +
+  #theme_minimal() +
+  scale_fill_viridis_d() +
   theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) +
   facet_geo(~ iso2, grid="eu_grid1")
-dev.off()
+#dev.off()
+
+ggsave(filename="~/BDHackathon2019AT/bigo/geofacetplots/fitness_cat_country.jpg", plot=fitness_cat_country_plot)
 
 
 fitmeal <- combidat[!is.na(median_fitness) & !is.na(iso2), list(pid,median_fitness,median_steps,fitness_cat,steps_cat,iso2,meal_type,temperature)]
