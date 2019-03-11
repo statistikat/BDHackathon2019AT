@@ -111,12 +111,14 @@ plot_ly(
   data = ppl,
   legendgroup = ~fitfct
 ) %>% 
-  plotly::add_markers(x = ~respondent,
-  y = ~sleepy,
-  type = "scatter",
-  color = ~fitfct) %>% 
-  layout(xaxis = order, yaxis = list(title = "hours of sleep", range = c(0, 10))) %>% 
-  add_segments(x = ~respondent, xend =  max(ppl$respondent), y = 5, yend = 5, showlegend = FALSE)
+  add_markers(
+    x = ~respondent,
+    y = ~sleepy,
+    type = "scatter",
+    color = ~fitfct) %>% 
+    layout(xaxis = order, yaxis = list(title = "hours of sleep", range = c(0, 10))) %>% 
+    add_segments(x = ~respondent, xend =  max(ppl$respondent), y = 5, yend = 5, showlegend = FALSE
+  )
 
 ```
 
@@ -160,7 +162,15 @@ d <- d[, rev(order(colSums(d)))]
 colnames(d) <- strtrim(colnames(d), 6)
 ```
 ```{r heatmap sensor meta, include=TRUE, echo=FALSE}
-plot_ly(x=seq_along(colnames(d)), y=rownames(d), z = d, type = "heatmap", showscale = FALSE, colors = c("#66c2a4", "#238b45"))
+plot_ly(
+  x = seq_along(colnames(d)), 
+  y = rownames(d), 
+  z = d, 
+  type = "heatmap", 
+  showscale = FALSE, 
+  colors = c("#66c2a4", "#238b45")
+) %>% 
+  layout(yaxis = list(dtick = 1))
 ```
 
 ***
@@ -205,7 +215,15 @@ d[rownames(d) %in% sleep_events] <- d[rownames(d) %in% sleep_events] + 2
 ```
 
 ```{r heatmap sensible sensors, include=TRUE, echo=FALSE}
-plot_ly(x=seq_along(colnames(d)), y=rownames(d), z = d, type = "heatmap", showscale = FALSE, colors = c("#edf8fb", "#b2e2e2", "#66c2a4", "#238b45")) 
+plot_ly(
+  x = seq_along(colnames(d)), 
+  y = rownames(d), 
+  z = d, 
+  type = "heatmap", 
+  showscale = FALSE, 
+  colors = c("#edf8fb", "#b2e2e2", "#66c2a4", "#238b45")
+) %>% 
+  layout(yaxis = list(dtick = 1))
 ```
 
 ***
